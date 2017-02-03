@@ -17,7 +17,6 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.xb.ipclearning.R;
-import com.xb.ipclearning.User;
 import com.xb.ipclearning.UserParcelable;
 
 import java.io.FileInputStream;
@@ -106,7 +105,7 @@ public class UseMessengerActivity extends Activity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_normal);
         ButterKnife.bind(this);
     }
 

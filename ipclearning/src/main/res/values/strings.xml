@@ -2,4 +2,8 @@
     <string name="app_name">IPCLearning</string>
     <string name="title_use_messenger">Send Messenger</string>
     <string name="btn_bind_service">Bind Service</string>
+    <string name="btn_string_use_aidl">use aidl</string>
+    <string name="btn_title_use_messenger">use messenger</string>
+    <string name="btn_string_use_content_provider">use ContentProvider</string>
+    <string name="btn_string_use_socket">use socket</string>
 </resources>

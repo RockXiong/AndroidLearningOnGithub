@@ -5,6 +5,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -50,13 +51,24 @@ public class ContentProviderActivity extends Activity
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count)
         {
-
         }
 
         @Override
         public void afterTextChanged(Editable s)
         {
-            mSvText.fullScroll(ScrollView.FOCUS_DOWN);
+            new Handler().post(new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    /* 该方法不能直接被调用
+                     因为Android很多函数都是基于消息队列来同步，所以需要一部操作，
+                     addView完之后，不等于马上就会显示，而是在队列中等待处理，虽然很快，但是如果立即调用fullScroll， view可能还没有显示出来，所以会失败
+                     应该通过handler在新线程中更新
+                     */
+                    mSvText.fullScroll(ScrollView.FOCUS_DOWN);
+                }
+            });
             //            mSvText.smoothScrollTo(0, mSvText.getBottom());
         }
     };

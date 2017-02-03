@@ -14,7 +14,7 @@
     <ScrollView
 
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         >
 
         <RelativeLayout
@@ -24,41 +24,58 @@
             >
 
             <Button
-                android:id="@+id/btn_use_aidl"
+                android:id="@+id/btn_bind_service"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/btn_string_use_aidl"
+                android:text="@string/btn_bind_service"
                 />
 
             <Button
                 android:id="@+id/btn_use_messenger"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/btn_use_aidl"
+                android:layout_below="@id/btn_bind_service"
                 android:layout_centerHorizontal="true"
-                android:text="@string/btn_title_use_messenger"
+                android:text="@string/title_use_messenger"
                 />
 
-            <Button
-                android:id="@+id/btn_use_content_provider"
+            <EditText
+                android:id="@+id/et_send_message"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/btn_use_messenger"
-                android:layout_centerHorizontal="true"
-                android:text="@string/btn_string_use_content_provider"
-                />
-
-            <Button
-                android:id="@+id/btn_use_socket"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/btn_use_content_provider"
-                android:layout_centerHorizontal="true"
-                android:text="@string/btn_string_use_socket"
                 />
         </RelativeLayout>
     </ScrollView>
 
+    <ScrollView
+        android:id="@+id/sv_text"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="15dp"
+        >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tv_title_result"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Result:"
+                />
+
+            <TextView
+                android:id="@+id/tv_value_result"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_title_result"
+                android:layout_marginTop="10dp"
+                android:text="result value"
+                />
+        </RelativeLayout>
+    </ScrollView>
 </LinearLayout>
 
 
