@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">AndroidLearning</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="list_view_learning">ListViewLearning</string>
+    <string name="list_view_item_text">hello world!</string>
+    <string name="toolbar_title_text">I am title</string>
+</resources>

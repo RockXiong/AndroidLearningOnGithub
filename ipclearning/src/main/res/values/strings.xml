@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">IPCLearning</string>
+    <string name="title_use_messenger">Send Messenger</string>
+    <string name="btn_bind_service">Bind Service</string>
+</resources>

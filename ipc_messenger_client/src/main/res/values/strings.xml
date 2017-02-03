@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">ipc_client</string>
+    <string name="send_to_server">send to server</string>
+    <string name="bind_remote_service">bind remote service</string>
+</resources>

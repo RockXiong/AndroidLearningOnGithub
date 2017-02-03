@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest package="com.xb.ipclearning"
+          xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
+    <permission
+        android:name="com.xb.ipclearning.permission.ACCESS_BOOK_SERVICE"
+        android:protectionLevel="normal"/>
+
+    <uses-permission android:name="com.xb.ipclearning.permission.ACCESS_BOOK_SERVICE"/>
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".useMessenger.UseMessengerActivity"/>
+        <!-- <intent-filter> -->
+        <!-- <action android:name="android.intent.action.MAIN"/> -->
+
+
+        <!-- <category android:name="android.intent.category.LAUNCHER"/> -->
+        <!-- </intent-filter> -->
+        <!-- </activity> -->
+        <service
+            android:name=".useMessenger.RemoteServiceMessenger"
+            android:process=":RemoteServiceMessenger"/>
+        <service
+            android:name=".useAIDL.service.BookManagerService"
+            android:process=":BookManagerService">
+        </service>
+
+        <activity android:name=".useAIDL.client.UseAIDLActivity"/>
+
+        <provider
+            android:name=".useContentProvider.BookProvider"
+            android:authorities="com.xb.ipclearning.useContentProvider.BookProvider"
+            android:permission="com.xb.ipclearning.useContentProvider.BookProvider"
+            android:process=":bookProvider"/>
+
+        <activity android:name=".useContentProvider.ContentProviderActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>
