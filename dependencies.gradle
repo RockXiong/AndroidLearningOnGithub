@@ -1,0 +1,6 @@
+ext {
+    dependencies = [
+            butterknife                    : 'com.jakewharton:butterknife:8.4.0',
+            butterknife_annotationProcessor: 'com.jakewharton:butterknife-compiler:8.4.0'
+    ]
+}

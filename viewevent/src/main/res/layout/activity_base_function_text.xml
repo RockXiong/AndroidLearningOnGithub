@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:id="@+id/activity_base_function_text"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    >
+
+    <Button
+        android:id="@+id/btn_view_animation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/view_animation"
+        />
+
+    <TextView
+        android:id="@+id/tv_velocity_title_x"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btn_view_animation"
+        android:text="@string/velocity_x"
+        />
+
+    <TextView
+        android:id="@+id/tv_velocity_title_y"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_velocity_title_x"
+        android:layout_marginTop="5dp"
+        android:text="@string/velocity_y"
+        />
+
+    <TextView
+        android:id="@+id/tv_velocity_value_x"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btn_view_animation"
+        android:layout_marginStart="10dp"
+        android:layout_toEndOf="@id/tv_velocity_title_x"
+        />
+
+    <TextView
+        android:id="@+id/tv_velocity_value_y"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_velocity_title_x"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_toEndOf="@id/tv_velocity_title_y"
+        />
+
+
+    <TextView
+        android:id="@+id/tv_touch_title_x"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_velocity_title_y"
+        android:text="@string/pointx"
+        />
+
+    <TextView
+        android:id="@+id/tv_touch_title_y"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_touch_title_x"
+        android:layout_marginTop="5dp"
+        android:text="@string/pointy"
+        />
+
+    <TextView
+        android:id="@+id/tv_touch_value_x"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_velocity_value_y"
+        android:layout_marginStart="10dp"
+        android:layout_toEndOf="@id/tv_velocity_title_x"
+        />
+
+    <TextView
+        android:id="@+id/tv_touch_value_y"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_touch_value_x"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_toEndOf="@id/tv_velocity_title_y"
+        />
+
+    <com.xb.viewevent.BaseFunctionTest.MySlideView
+        android:id="@+id/v_canvas"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_below="@id/tv_touch_value_y"
+        android:layout_marginTop="10dp"
+        android:background="@color/colorAccent"/>
+</RelativeLayout>

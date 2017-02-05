@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">ViewEvent</string>
+    <string name="velocity_tracker">VelocityTracker</string>
+    <string name="base_function_test">BaseFunctionTest</string>
+    <string name="velocity_x">VelocityX:</string>
+    <string name="velocity_y">VelocityY:</string>
+    <string name="view_animation">view animation</string>
+    <string name="pointx">PointX:</string>
+    <string name="pointy">PointY:</string>
 </resources>
