@@ -96,5 +96,7 @@
         android:layout_height="200dp"
         android:layout_below="@id/tv_touch_value_y"
         android:layout_marginTop="10dp"
-        android:background="@color/colorAccent"/>
+        android:src="@mipmap/test"
+        android:background="@color/colorAccent"
+        />
 </RelativeLayout>

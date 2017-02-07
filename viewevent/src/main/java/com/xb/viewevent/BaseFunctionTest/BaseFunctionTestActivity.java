@@ -1,7 +1,6 @@
 package com.xb.viewevent.BaseFunctionTest;
 
 import android.animation.ObjectAnimator;
-import android.graphics.Path;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
@@ -19,6 +18,7 @@ import butterknife.OnClick;
 
 public class BaseFunctionTestActivity extends AppCompatActivity implements View.OnTouchListener
 {
+    private static final String TAG = "TestActivity";
 
     @BindView(R.id.v_canvas)
     View mVCanvas;
@@ -33,12 +33,16 @@ public class BaseFunctionTestActivity extends AppCompatActivity implements View.
     @BindView(R.id.tv_touch_value_y)
     TextView mTvTouchValueY;
 
-    private float mXVelocity = 10;
+    private float mXVelocity = 1000;// m/s
     private float mAccelerationOfGravity = 9.8f;
     private float mScreenW;
     private float mScreenH;
     private float mLastYS;
-    private double mLastYVelocity;
+    private float mLastXS;
+    private float mLastYVelocity;
+    private int mDuration = 100;//unit:ms
+    private float mConvertCoordinateX;
+    private float mConvertCoordinateY;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -51,6 +55,10 @@ public class BaseFunctionTestActivity extends AppCompatActivity implements View.
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         mScreenW = displayMetrics.widthPixels;
         mScreenH = displayMetrics.heightPixels;
+        int loc[] = new int[2];
+        mVCanvas.getLocationOnScreen(loc);
+        mConvertCoordinateX = mVCanvas.getX() / loc[0];
+        mConvertCoordinateY = mVCanvas.getY() / loc[1];
     }
 
     @Override
@@ -85,7 +93,8 @@ public class BaseFunctionTestActivity extends AppCompatActivity implements View.
                 break;
             }
         }
-        return super.onTouchEvent(event);
+        return super.onTouchEvent(event);//等同于 return false;因为onTouch中如果返回false,该view的onTouchEvent会被调用
+        //        return true;
     }
 
     @OnClick(R.id.btn_view_animation)
@@ -97,20 +106,55 @@ public class BaseFunctionTestActivity extends AppCompatActivity implements View.
                 ObjectAnimator.ofFloat(mVCanvas, "translationX", 0, 100, 300).setDuration(100).start();
                 //                AnimationSet animationSet = (AnimationSet) AnimationUtils.loadAnimation(this, R.anim.my_anim);
                 //                mVCanvas.startAnimation(animationSet);
-
+                //                startAnimate();
                 break;
         }
     }
 
-    Path mPath = new Path();
 
-    private void startAnimate(float x, float y)
+    boolean stopAni = false;
+
+    private void startAnimate()
     {
-        //TODO 实现自由落体以及抛物线
-        实现自由落体以及抛物线
-        mLastYS = mScreenH - y;//Y方向距离
-        mLastYVelocity = Math.sqrt(2 * mLastYS * mAccelerationOfGravity);//Y方向速度
-        double xS = mXVelocity * (mLastYVelocity / mAccelerationOfGravity);//X方向偏移距离
+        //TODO 待实现
+        //        float[] newLocation = new float[2];
+        //        do
+        //        {
+        //            //        if (stopAni)
+        //            //        {
+        //            //            return;
+        //            //        }
+        //            //        mLastYS = mScreenH - y;//Y方向距离
+        //            //        mLastYVelocity = Math.sqrt(2 * mLastYS * mAccelerationOfGravity);//Y方向速度
+        //            float xS = mXVelocity * mDuration / 1000;//X方向偏移距离
+        //            float yS = mLastYVelocity * mDuration / 1000 + 0.5f * mAccelerationOfGravity * (mDuration / 1000) * (mDuration / 1000);//Y方向偏移距离
+        //            mLastYVelocity += mAccelerationOfGravity * mDuration / 1000;
+        //            int[] oldLocation = new int[2];
+        //            mVCanvas.getLocationOnScreen(oldLocation);
+        //            newLocation[0] = oldLocation[0] + xS;
+        //            newLocation[1] = oldLocation[1] + yS;
+        //            //            if (newLocation[1] >= mScreenH)
+        //            //            {
+        //            //                newLocation[1] = mScreenH;
+        //            //                stopAni = true;
+        //            //            }
+        //            //            if (newLocation[0] >= mScreenW)
+        //            //            {
+        //            //                newLocation[0] = mScreenW;
+        //            //                stopAni = true;
+        //            //            }
+        //            Log.d(TAG, "oldLocation[0]=" + oldLocation[0] + ";oldLocation[1]=" + oldLocation[1]);
+        //            Log.d(TAG, "xS=" + xS + ";yS=" + yS + ";mLastYVelocity=" + mLastYVelocity);
+        //            Log.d(TAG, "newLocation[0]=" + newLocation[0] + ";newLocation[1]=" + newLocation[1]);
+        //
+        //            AnimatorSet animatorSet = new AnimatorSet();
+        //            ObjectAnimator xAnimator = ObjectAnimator.ofFloat(mVCanvas, View.TRANSLATION_X, xS);
+        //            ObjectAnimator yAnimator = ObjectAnimator.ofFloat(mVCanvas, View.TRANSLATION_Y, yS);
+        //
+        //            animatorSet.setDuration(1000).playTogether(xAnimator, yAnimator);
+        //            animatorSet.start();
+        //        } while ((newLocation[1] <= mScreenH) && (newLocation[0] <= mScreenW));
+
     }
 
 }
