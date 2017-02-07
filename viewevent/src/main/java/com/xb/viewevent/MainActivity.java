@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.xb.viewevent.BaseFunctionTest.BaseFunctionTestActivity;
+import com.xb.viewevent.SlidingConflict.SlidingConflictActivity;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -21,7 +22,7 @@ public class MainActivity extends AppCompatActivity
         ButterKnife.bind(this);
     }
 
-    @OnClick(R.id.btn_base_function_test)
+    @OnClick({R.id.btn_base_function_test, R.id.btn_sliding_conflict})
     public void onClick(View view)
     {
         switch (view.getId())
@@ -29,7 +30,9 @@ public class MainActivity extends AppCompatActivity
             case R.id.btn_base_function_test:
                 jumpActivity(BaseFunctionTestActivity.class);
                 break;
-
+            case R.id.btn_sliding_conflict:
+                jumpActivity(SlidingConflictActivity.class);
+                break;
         }
     }
 

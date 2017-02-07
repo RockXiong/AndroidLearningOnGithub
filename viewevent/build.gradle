@@ -31,4 +31,5 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile rootProject.ext.dependencies.butterknife
     compile rootProject.ext.dependencies.butterknife_annotationProcessor
+    compile 'com.android.support.constraint:constraint-layout:1.0.0-beta4'
 }
