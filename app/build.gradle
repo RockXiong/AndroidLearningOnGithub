@@ -1,12 +1,12 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    compileSdkVersion rootProject.ext.android.compileSdkVersion
+    buildToolsVersion rootProject.ext.android.buildToolsVersion
     defaultConfig {
         applicationId "com.xiongda.androidlearning"
-        minSdkVersion 21
-        targetSdkVersion 25
+        minSdkVersion rootProject.ext.android.minSdkVersion
+        targetSdkVersion rootProject.ext.android.targetSdkVersion
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -25,11 +25,9 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.android.support:appcompat-v7:25.1.0'
-    compile 'com.android.support:design:25.1.0'
+    compile rootProject.ext.dependencies.androidSupportAppcompatV7
+    compile rootProject.ext.dependencies.androidSupportDesign
     testCompile 'junit:junit:4.12'
-    compile 'com.jakewharton:butterknife:8.4.0'
-    //添加这行
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
-    //添加这行
+    compile rootProject.ext.dependencies.jakewhartonButterknife
+    annotationProcessor rootProject.ext.dependencies.jakewhartonButterknifeAnnotationProcessor
 }
