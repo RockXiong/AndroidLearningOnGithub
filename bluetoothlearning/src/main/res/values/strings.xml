@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">BluetoothLearning</string>
+    <string name="open_bluetooth">open bluetooth</string>
+</resources>
