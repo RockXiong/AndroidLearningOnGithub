@@ -46,23 +46,35 @@ public class MainActivity extends AppCompatActivity
                     case MotionEvent.ACTION_DOWN:
                         break;
                     case MotionEvent.ACTION_MOVE:
-                        mLayoutParams.x = rawX;
-                        mLayoutParams.y = rawY;
+                        mLayoutParams.x = rawX - mButton.getWidth() / 2;
+                        mLayoutParams.y = rawY - mButton.getHeight() / 2;
                         mWindowManager.updateViewLayout(mButton, mLayoutParams);
                         break;
                 }
                 return false;
             }
         });
-        mWindowManager.addView(mButton, mLayoutParams);
 
+        mWindowManager.addView(mButton, mLayoutParams);
+        mButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                mWindowManager.removeView(v);
+                mButton = null;
+            }
+        });
     }
 
     @Override
     protected void onDestroy()
     {
         super.onDestroy();
-        mWindowManager.removeView(mButton);
+        if (null != mButton)
+        {
+            mWindowManager.removeView(mButton);
+        }
         mWindowManager = null;
         mLayoutParams = null;
         mButton = null;
