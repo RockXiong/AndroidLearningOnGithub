@@ -13,7 +13,7 @@ public class MyBluetoothDevice
     private BluetoothDevice mBluetoothDevice;
     int mRssi;
 
-    public MyBluetoothDevice(@NonNull BluetoothDevice bluetoothDevice, int rssi)
+    MyBluetoothDevice(@NonNull BluetoothDevice bluetoothDevice, int rssi)
     {
         mBluetoothDevice = bluetoothDevice;
         mRssi = rssi;
