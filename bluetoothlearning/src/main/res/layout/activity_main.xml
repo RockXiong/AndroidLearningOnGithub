@@ -146,6 +146,11 @@
                     android:layout_marginStart="@dimen/activity_horizontal_margin"
                     android:background="#cccccc"/>
 
+                <LinearLayout
+                    android:id="@+id/ll_paired_device_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"/>
 
             </LinearLayout>
 
@@ -179,6 +184,11 @@
                     android:layout_marginStart="@dimen/activity_horizontal_margin"
                     android:background="#cccccc"/>
 
+                <LinearLayout
+                    android:id="@+id/ll_available_device_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"/>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

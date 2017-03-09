@@ -18,19 +18,20 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.xb.bluetoothlearning.adapter.DeviceListAdapter;
-
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
@@ -60,6 +61,14 @@ public class MainActivity extends Activity
     TextView mTvValueDeviceName;
     @BindView(R.id.rl_device_name)
     RelativeLayout mRlDeviceName;
+    @BindView(R.id.ll_paired_device)
+    LinearLayout mLlPairedDevice;
+    @BindView(R.id.ll_available_device)
+    LinearLayout mLlAvailableDevice;
+    @BindView(R.id.ll_paired_device_container)
+    LinearLayout mLlPairedDeviceContainer;
+    @BindView(R.id.ll_available_device_container)
+    LinearLayout mLlAvailableDeviceContainer;
 
     private BluetoothAdapter mBluetoothAdapter;
     private BluetoothManager mBluetoothManager;
@@ -68,9 +77,9 @@ public class MainActivity extends Activity
 
 
     private ArrayList<MyBluetoothDevice> mAvailableDevices = new ArrayList<>();
-    private DeviceListAdapter mAvailableDeviceListAdapter;
     private ArrayList<MyBluetoothDevice> mPairedDevices = new ArrayList<>();
-    private DeviceListAdapter mPairedDeviceListAdapter;
+    private HashMap<String, LinearLayout> mRlAvailableDevices = new HashMap<>();
+    private HashMap<String, LinearLayout> mRlPairedDevices = new HashMap<>();
     private Handler mScanHandler = new Handler();
     private boolean isScanning;
 
@@ -117,7 +126,6 @@ public class MainActivity extends Activity
                 {
                     mAvailableDevices.get(mAvailableDevices.indexOf(myBluetoothDevice)).setRssi(result.getRssi());
                 }
-                mAvailableDeviceListAdapter.notifyDataSetChanged();
                 Log.e(TAG, "Scan record=" + result.getScanRecord());
                 Log.e(TAG, "Raw data=" + Arrays.toString(result.getScanRecord().getBytes()));
 
@@ -182,11 +190,7 @@ public class MainActivity extends Activity
         bluetoothEnable(mBluetoothAdapter.isEnabled());
         mTvValueDeviceName.setText(mBluetoothAdapter.getName());
         mSwSwitchDiscoverable.setChecked(mBluetoothAdapter.getScanMode() == BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE);
-
-        mAvailableDeviceListAdapter = new DeviceListAdapter(this, mAvailableDevices);
-
-        mPairedDeviceListAdapter=new DeviceListAdapter(this,mPairedDevices);
-
+        findPairedDevices();
         if (mBluetoothAdapter.isEnabled())
         {
             scanBluetooth();
@@ -245,8 +249,11 @@ public class MainActivity extends Activity
         {
             mBluetoothLeScanner.stopScan(mScanCallback);
         }
+
+        mLlAvailableDeviceContainer.removeAllViews();
+        mRlAvailableDevices.clear();
         mAvailableDevices.clear();
-        mAvailableDeviceListAdapter.notifyDataSetChanged();
+
         ScanSettings scanSettings = new ScanSettings.Builder().setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY).build();
         mBluetoothLeScanner.startScan(null, scanSettings, mScanCallback);
         mScanHandler.postDelayed(runnableScan, 12000);
@@ -351,8 +358,33 @@ public class MainActivity extends Activity
             for (BluetoothDevice device : pairedDevices)
             {
                 Log.e(TAG, "paired device:" + device.getName() + ", " + device.getAddress() + ", " + Arrays.toString(device.getUuids()));
+                addViewItem(mLlPairedDeviceContainer, new MyBluetoothDevice(device, 0));
             }
         }
+    }
+
+    private void addViewItem(ViewGroup viewParent, MyBluetoothDevice myBluetoothDevice)
+    {
+        LinearLayout relativeLayout = (LinearLayout) getLayoutInflater().inflate(R.layout.item_bluetooth_devices, null);
+        relativeLayout.setTag(myBluetoothDevice.getAddress());
+        ((TextView) relativeLayout.findViewById(R.id.tv_device_name)).setText(myBluetoothDevice.getName());
+        ((TextView) relativeLayout.findViewById(R.id.tv_mac_address)).setText(myBluetoothDevice.getAddress());
+        ((TextView) relativeLayout.findViewById(R.id.tv_rssi)).setText(myBluetoothDevice.getRssi() + "");
+        if (viewParent.getId() == R.id.ll_paired_device_container)
+        {
+            if (!mRlPairedDevices.containsKey(myBluetoothDevice.getAddress()))
+            {
+                mRlPairedDevices.put(myBluetoothDevice.getAddress(), relativeLayout);
+            }
+        } else
+        {
+            if (!mRlAvailableDevices.containsKey(myBluetoothDevice.getAddress()))
+            {
+                mRlAvailableDevices.put(myBluetoothDevice.getAddress(), relativeLayout);
+            }
+        }
+        viewParent.addView(relativeLayout);
+//        写到这里
     }
 
     @Override
@@ -387,10 +419,6 @@ public class MainActivity extends Activity
     @OnClick(R.id.btn_scan)
     public void onClick(View view)
     {
-        if (null == mAvailableDeviceListAdapter)
-        {
-            return;
-        }
         switch (view.getId())
         {
             case R.id.btn_scan:
@@ -503,7 +531,6 @@ public class MainActivity extends Activity
                     {
                         mAvailableDevices.get(mAvailableDevices.indexOf(myBluetoothDevice)).setRssi(rssi);
                     }
-                    mAvailableDeviceListAdapter.notifyDataSetChanged();
                     Log.e(TAG, "Find device:" + "name=" + device.getName() + ",address=" + device.getAddress() + ",RSSI=" + rssi);
                     break;
                 case BluetoothAdapter.ACTION_DISCOVERY_FINISHED://搜索结束
