@@ -27,6 +27,8 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.xb.bluetoothlearning.wiget.MyDialog;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -82,7 +84,7 @@ public class MainActivity extends Activity
     private HashMap<String, RelativeLayout> mRlPairedDevices = new HashMap<>();
     private Handler mScanHandler = new Handler();
     private boolean isScanning;
-
+    private MyDialog mMyDialog;
     private CompoundButton.OnCheckedChangeListener mOnCheckedChangeListener = new CompoundButton.OnCheckedChangeListener()
     {
         @Override
@@ -429,7 +431,7 @@ public class MainActivity extends Activity
         mBtnScan.setEnabled(bluetoothEnable);
     }
 
-    @OnClick(R.id.btn_scan)
+    @OnClick({R.id.btn_scan, R.id.rl_device_name})
     public void onClick(View view)
     {
         switch (view.getId())
@@ -450,7 +452,53 @@ public class MainActivity extends Activity
                     }
                 }
                 break;
+            case R.id.rl_device_name:
+            {
+                if (null != mMyDialog)
+                {
+                    if (mMyDialog.isShowing())
+                    {
+                        mMyDialog.dismiss();
+                        return;
+                    }
+                    mMyDialog.show();
+                } else
+                {
+                    mMyDialog = createMyDialog();
+                }
+            }
+            break;
         }
+    }
+
+    private MyDialog createMyDialog()
+    {
+        return new MyDialog(this, new MyDialog.IMyDialogListener()
+        {
+            @Override
+            public void onCancel()
+            {
+                if (null != mMyDialog && mMyDialog.isShowing())
+                {
+                    mMyDialog.dismiss();
+                }
+            }
+
+            @Override
+            public void onOk(String str)
+            {
+                updateBluetoothDeviceName(str);
+                if (null != mMyDialog && mMyDialog.isShowing())
+                {
+                    mMyDialog.dismiss();
+                }
+            }
+        });
+    }
+
+    private void updateBluetoothDeviceName(String str)
+    {
+
     }
 
     @OnCheckedChanged({R.id.sw_switch_bluetooth, R.id.sw_switch_discoverable})
@@ -537,14 +585,14 @@ public class MainActivity extends Activity
                     BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                     int rssi = intent.getExtras().getShort(BluetoothDevice.EXTRA_RSSI);
                     MyBluetoothDevice myBluetoothDevice = new MyBluetoothDevice(device, rssi);
-//                    if (mAvailableDevices.indexOf(myBluetoothDevice) < 0)
-//                    {
-//                        mAvailableDevices.add(myBluetoothDevice);
-//                    } else
-//                    {
-//                        mAvailableDevices.get(mAvailableDevices.indexOf(myBluetoothDevice)).setRssi(rssi);
-//                    }
-                    addViewItem(mLlAvailableDeviceContainer,myBluetoothDevice);
+                    //                    if (mAvailableDevices.indexOf(myBluetoothDevice) < 0)
+                    //                    {
+                    //                        mAvailableDevices.add(myBluetoothDevice);
+                    //                    } else
+                    //                    {
+                    //                        mAvailableDevices.get(mAvailableDevices.indexOf(myBluetoothDevice)).setRssi(rssi);
+                    //                    }
+                    addViewItem(mLlAvailableDeviceContainer, myBluetoothDevice);
                     Log.e(TAG, "Find device:" + "name=" + device.getName() + ",address=" + device.getAddress() + ",RSSI=" + rssi);
                     break;
                 case BluetoothAdapter.ACTION_DISCOVERY_FINISHED://搜索结束
@@ -578,4 +626,6 @@ public class MainActivity extends Activity
         mScanCallback = null;
         mScanHandler = null;
     }
+
+
 }
