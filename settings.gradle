@@ -1,1 +1,1 @@
-include ':app', ':ipc_messenger_client', ':ipc_messenger_server', ':ipclearning', ':viewevent', ':eventbuslearning', ':windowandwindowmanager', ':bluetoothlearning',  ':buglytinkertest2'
+include ':app', ':ipc_messenger_client', ':ipc_messenger_server', ':ipclearning', ':viewevent', ':eventbuslearning', ':windowandwindowmanager', ':bluetoothlearning', ':buglytinkertest2', ':navigationviewlearning'

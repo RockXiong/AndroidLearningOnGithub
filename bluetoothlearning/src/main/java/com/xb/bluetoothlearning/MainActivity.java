@@ -42,8 +42,7 @@ import butterknife.ButterKnife;
 import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 
-public class MainActivity extends Activity
-{
+public class MainActivity extends Activity {
     private static final String TAG = "BluetoothMainActivity";
     private static final int CODE_BLUETOOTH_ENABLE = 0x01;
     private static final String BUTTON_TEXT_SCAN_ON = "Start Scan";
@@ -85,40 +84,32 @@ public class MainActivity extends Activity
     private Handler mScanHandler = new Handler();
     private boolean isScanning;
     private MyDialog mMyDialog;
-    private CompoundButton.OnCheckedChangeListener mOnCheckedChangeListener = new CompoundButton.OnCheckedChangeListener()
-    {
+    private CompoundButton.OnCheckedChangeListener mOnCheckedChangeListener = new CompoundButton.OnCheckedChangeListener() {
         @Override
-        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
-        {
-            if (buttonView.equals(mSwSwitchBluetooth))
-            {
+        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            if (buttonView.equals(mSwSwitchBluetooth)) {
 
             }
         }
     };
 
-    private ScanCallback mScanCallback = new ScanCallback()
-    {
+    private ScanCallback mScanCallback = new ScanCallback() {
         @Override
-        public void onBatchScanResults(List<ScanResult> results)
-        {
+        public void onBatchScanResults(List<ScanResult> results) {
             super.onBatchScanResults(results);
             Log.e(TAG, "results=" + results.toString());
         }
 
         @Override
-        public void onScanFailed(int errorCode)
-        {
+        public void onScanFailed(int errorCode) {
             super.onScanFailed(errorCode);
             Log.e(TAG, "搜索失败!");
         }
 
         @Override
-        public void onScanResult(int callbackType, ScanResult result)
-        {
+        public void onScanResult(int callbackType, ScanResult result) {
             super.onScanResult(callbackType, result);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-            {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 BluetoothDevice device = result.getDevice();
                 MyBluetoothDevice myBluetoothDevice = new MyBluetoothDevice(device, result.getRssi());
                 //                if (mAvailableDevices.indexOf(myBluetoothDevice) < 0)
@@ -138,13 +129,75 @@ public class MainActivity extends Activity
             }
         }
     };
-    private Runnable runnableScan = new Runnable()
-    {
+
+    private void parseData(byte[] advertisedData) {
+        byte len;
+        byte type;
+        int index = 0;
+        while (advertisedData[index] != 0) {
+            len = advertisedData[index];
+            type = advertisedData[index + 1];
+            switch (type) {
+                case 0x01:
+                    break;
+                case 0x02:
+                    break;
+                case 0x03:
+                    break;
+                case 0x04:
+                    break;
+                case 0x05:
+                    break;
+                case 0x06:
+                    break;
+                case 0x07:
+                    break;
+                case 0x08:
+                    break;
+                case 0x09:
+                    break;
+                case 0x0A:
+                    break;
+                case 0x0D:
+                    break;
+                case 0x0E:
+                    break;
+                case 0x0F:
+                    break;
+                case 0x10:
+                    break;
+                case 0x11:
+                    break;
+                case 0x12:
+                    break;
+                case 0x14:
+                    break;
+                case 0x15:
+                    break;
+                case 0x16:
+                    break;
+                case 0x17:
+                    break;
+                case 0x18:
+                    break;
+                case 0x19:
+                    break;
+                case -1:
+                    break;
+
+            }
+            index += (len + 1);
+
+            if (index >= advertisedData.length) {
+                break;
+            }
+        }
+    }
+
+    private Runnable runnableScan = new Runnable() {
         @Override
-        public void run()
-        {
-            if (null == mScanCallback)
-            {
+        public void run() {
+            if (null == mScanCallback) {
                 return;
             }
             stopScan();
@@ -152,40 +205,34 @@ public class MainActivity extends Activity
         }
     };
 
-    private void parseRawData(byte[] datas)
-    {
+    private void parseRawData(byte[] datas) {
         byte len;
         byte type;
         int index = 0;
         String deviceName = "";
         int deviceCode = 0;
         int manufacturer = 0;
-        while (datas[index] != 0)
-        {
+        while (datas[index] != 0) {
             len = datas[index];
             type = datas[index + 1];
             Log.e(TAG, "len=" + len + ";type=" + type);
-            switch (type)
-            {
+            switch (type) {
                 case 0x08:
             }
         }
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         registerBluetoothReceiver();
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         mBluetoothManager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
-        if (null != mBluetoothManager)
-        {
+        if (null != mBluetoothManager) {
             //            mBluetoothAdapter = mBluetoothManager.getAdapter();//这种方式也可以
             mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-            if (null == mBluetoothAdapter)
-            {
+            if (null == mBluetoothAdapter) {
                 Toast.makeText(this, "该设备不支持蓝牙", Toast.LENGTH_SHORT).show();
                 return;
             }
@@ -199,65 +246,50 @@ public class MainActivity extends Activity
     }
 
     @Override
-    protected void onResume()
-    {
+    protected void onResume() {
         super.onResume();
-        if (mBluetoothAdapter.isEnabled())
-        {
+        if (mBluetoothAdapter.isEnabled()) {
             scanBluetooth();
         }
     }
 
-    private void openBluetooth()
-    {
-        if (null != mBluetoothAdapter && !mBluetoothAdapter.isEnabled())
-        {
+    private void openBluetooth() {
+        if (null != mBluetoothAdapter && !mBluetoothAdapter.isEnabled()) {
             Intent intent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(intent, CODE_BLUETOOTH_ENABLE);
         }
     }
 
-    private void closeBluetooth()
-    {
-        if (null == mBluetoothAdapter)
-        {
+    private void closeBluetooth() {
+        if (null == mBluetoothAdapter) {
             return;
         }
-        if (mBluetoothAdapter.isDiscovering())
-        {
+        if (mBluetoothAdapter.isDiscovering()) {
             mBluetoothAdapter.cancelDiscovery();
         }
-        if (isScanning)
-        {
-            if (null == mBluetoothLeScanner || null == mScanCallback)
-            {
+        if (isScanning) {
+            if (null == mBluetoothLeScanner || null == mScanCallback) {
                 return;
             }
             mBluetoothLeScanner.stopScan(mScanCallback);
         }
-        if (mBluetoothAdapter.disable())
-        {
+        if (mBluetoothAdapter.disable()) {
             mRlDiscoverySwitch.setEnabled(false);
         }
     }
 
-    private void scanBluetooth()
-    {
-        if (null == mBluetoothAdapter)
-        {
+    private void scanBluetooth() {
+        if (null == mBluetoothAdapter) {
             throw new RuntimeException("mBluetoothAdapter can not be null!");
         }
-        if (null == mScanCallback)
-        {
+        if (null == mScanCallback) {
             throw new RuntimeException("mScanCallback can not be null!");
         }
         mBtnScan.setText(BUTTON_TEXT_SCAN_OFF);
-        if (null == mBluetoothLeScanner)
-        {
+        if (null == mBluetoothLeScanner) {
             mBluetoothLeScanner = mBluetoothAdapter.getBluetoothLeScanner();
         }
-        if (isScanning)
-        {
+        if (isScanning) {
             mBluetoothLeScanner.stopScan(mScanCallback);
         }
 
@@ -272,10 +304,8 @@ public class MainActivity extends Activity
         findPairedDevices();
     }
 
-    private void loadBluetoothInfo()
-    {
-        if (null == mBluetoothAdapter)
-        {
+    private void loadBluetoothInfo() {
+        if (null == mBluetoothAdapter) {
             return;
         }
         Log.e(TAG, "本地蓝牙地址:" + mBluetoothAdapter.getAddress());
@@ -287,22 +317,18 @@ public class MainActivity extends Activity
     /**
      * 使本机蓝牙300s内处于可见状态
      */
-    private void ensureDiscoverable()
-    {
-        if (mBluetoothAdapter.getScanMode() != BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE)
-        {
+    private void ensureDiscoverable() {
+        if (mBluetoothAdapter.getScanMode() != BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE) {
             Intent discoverableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
             discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 1);
             startActivity(discoverableIntent);
         }
     }
 
-    private void setDiscoverable(Boolean discoverable)
-    {
+    private void setDiscoverable(Boolean discoverable) {
         if (discoverable)//通过反射调用BluetoothAdapter中隐藏的方法
         {
-            try
-            {
+            try {
                 Method setDiscoverableTimeout = BluetoothAdapter.class.getMethod("setDiscoverableTimeout", int.class);
                 setDiscoverableTimeout.setAccessible(true);
 
@@ -312,23 +338,15 @@ public class MainActivity extends Activity
                 setDiscoverableTimeout.invoke(mBluetoothAdapter, 0);
                 setScanMode.invoke(mBluetoothAdapter, BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE, 0);
 
-            }
-            catch (NoSuchMethodException e)
-            {
+            } catch (NoSuchMethodException e) {
+                e.printStackTrace();
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
                 e.printStackTrace();
             }
-            catch (InvocationTargetException e)
-            {
-                e.printStackTrace();
-            }
-            catch (IllegalAccessException e)
-            {
-                e.printStackTrace();
-            }
-        } else
-        {
-            try
-            {
+        } else {
+            try {
                 Method setDiscoverableTimeout = BluetoothAdapter.class.getMethod("setDiscoverableTimeout", int.class);
                 setDiscoverableTimeout.setAccessible(true);
 
@@ -337,17 +355,11 @@ public class MainActivity extends Activity
 
                 setDiscoverableTimeout.invoke(mBluetoothAdapter, 1);
                 setScanMode.invoke(mBluetoothAdapter, BluetoothAdapter.SCAN_MODE_CONNECTABLE, 1);
-            }
-            catch (NoSuchMethodException e)
-            {
+            } catch (NoSuchMethodException e) {
                 e.printStackTrace();
-            }
-            catch (InvocationTargetException e)
-            {
+            } catch (InvocationTargetException e) {
                 e.printStackTrace();
-            }
-            catch (IllegalAccessException e)
-            {
+            } catch (IllegalAccessException e) {
                 e.printStackTrace();
             }
         }
@@ -357,43 +369,34 @@ public class MainActivity extends Activity
     /**
      * 查找已匹配的设备
      */
-    private void findPairedDevices()
-    {
-        if (null == mBluetoothAdapter)
-        {
+    private void findPairedDevices() {
+        if (null == mBluetoothAdapter) {
             return;
         }
         Set<BluetoothDevice> pairedDevices = mBluetoothAdapter.getBondedDevices();
-        if (pairedDevices.size() > 0)
-        {
-            for (BluetoothDevice device : pairedDevices)
-            {
+        if (pairedDevices.size() > 0) {
+            for (BluetoothDevice device : pairedDevices) {
                 Log.e(TAG, "paired device:" + device.getName() + ", " + device.getAddress() + ", " + Arrays.toString(device.getUuids()));
                 addViewItem(mLlPairedDeviceContainer, new MyBluetoothDevice(device, 0));
             }
         }
     }
 
-    private void addViewItem(ViewGroup viewParent, MyBluetoothDevice myBluetoothDevice)
-    {
+    private void addViewItem(ViewGroup viewParent, MyBluetoothDevice myBluetoothDevice) {
         RelativeLayout relativeLayout = (RelativeLayout) getLayoutInflater().inflate(R.layout.item_bluetooth_devices, null);
         relativeLayout.setTag(myBluetoothDevice.getAddress());
         ((TextView) relativeLayout.findViewById(R.id.tv_device_name)).setText(myBluetoothDevice.getName());
         ((TextView) relativeLayout.findViewById(R.id.tv_mac_address)).setText(myBluetoothDevice.getAddress());
         TextView textViewRssi = (TextView) relativeLayout.findViewById(R.id.tv_rssi);
         textViewRssi.setText(String.valueOf(myBluetoothDevice.getRssi()));
-        if (viewParent.getId() == R.id.ll_paired_device_container)
-        {
-            if (mRlPairedDevices.containsKey(myBluetoothDevice.getAddress()))
-            {
+        if (viewParent.getId() == R.id.ll_paired_device_container) {
+            if (mRlPairedDevices.containsKey(myBluetoothDevice.getAddress())) {
                 ((TextView) (mRlPairedDevices.get(myBluetoothDevice.getAddress()).findViewById(R.id.tv_rssi))).setText(String.valueOf(myBluetoothDevice.getRssi()));
                 return;
             }
             mRlPairedDevices.put(myBluetoothDevice.getAddress(), relativeLayout);
-        } else
-        {
-            if (mRlAvailableDevices.containsKey(myBluetoothDevice.getAddress()))
-            {
+        } else {
+            if (mRlAvailableDevices.containsKey(myBluetoothDevice.getAddress())) {
                 ((TextView) (mRlAvailableDevices.get(myBluetoothDevice.getAddress()).findViewById(R.id.tv_rssi))).setText(String.valueOf(myBluetoothDevice.getRssi()));
                 return;
             }
@@ -403,20 +406,16 @@ public class MainActivity extends Activity
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == CODE_BLUETOOTH_ENABLE)
-        {
-            if (resultCode == RESULT_OK)
-            {
+        if (requestCode == CODE_BLUETOOTH_ENABLE) {
+            if (resultCode == RESULT_OK) {
                 //                mTvBluetoothState.setText("ON");
                 //                mBtnSwitchBluetooth.setText("Close Bluetooth");
                 bluetoothEnable(true);
                 loadBluetoothInfo();
                 scanBluetooth();
-            } else
-            {
+            } else {
                 finish();
                 System.exit(-1);
                 bluetoothEnable(false);
@@ -424,46 +423,35 @@ public class MainActivity extends Activity
         }
     }
 
-    private void bluetoothEnable(boolean bluetoothEnable)
-    {
+    private void bluetoothEnable(boolean bluetoothEnable) {
         mRlDiscoverySwitch.setEnabled(bluetoothEnable);
         mSwSwitchDiscoverable.setEnabled(bluetoothEnable);
         mBtnScan.setEnabled(bluetoothEnable);
     }
 
     @OnClick({R.id.btn_scan, R.id.rl_device_name})
-    public void onClick(View view)
-    {
-        switch (view.getId())
-        {
+    public void onClick(View view) {
+        switch (view.getId()) {
             case R.id.btn_scan:
-                if (!mBluetoothAdapter.isEnabled() || null == mBluetoothLeScanner)
-                {
+                if (!mBluetoothAdapter.isEnabled() || null == mBluetoothLeScanner) {
                     return;
-                } else
-                {
-                    if (mBtnScan.getText().toString().equals(BUTTON_TEXT_SCAN_OFF))
-                    {
+                } else {
+                    if (mBtnScan.getText().toString().equals(BUTTON_TEXT_SCAN_OFF)) {
                         stopScan();
                         mBtnScan.setText(BUTTON_TEXT_SCAN_ON);
-                    } else
-                    {
+                    } else {
                         scanBluetooth();
                     }
                 }
                 break;
-            case R.id.rl_device_name:
-            {
-                if (null != mMyDialog)
-                {
-                    if (mMyDialog.isShowing())
-                    {
+            case R.id.rl_device_name: {
+                if (null != mMyDialog) {
+                    if (mMyDialog.isShowing()) {
                         mMyDialog.dismiss();
                         return;
                     }
                     mMyDialog.show();
-                } else
-                {
+                } else {
                     mMyDialog = createMyDialog();
                 }
             }
@@ -471,56 +459,42 @@ public class MainActivity extends Activity
         }
     }
 
-    private MyDialog createMyDialog()
-    {
-        return new MyDialog(this, new MyDialog.IMyDialogListener()
-        {
+    private MyDialog createMyDialog() {
+        return new MyDialog(this, new MyDialog.IMyDialogListener() {
             @Override
-            public void onCancel()
-            {
-                if (null != mMyDialog && mMyDialog.isShowing())
-                {
+            public void onCancel() {
+                if (null != mMyDialog && mMyDialog.isShowing()) {
                     mMyDialog.dismiss();
                 }
             }
 
             @Override
-            public void onOk(String str)
-            {
+            public void onOk(String str) {
                 updateBluetoothDeviceName(str);
-                if (null != mMyDialog && mMyDialog.isShowing())
-                {
+                if (null != mMyDialog && mMyDialog.isShowing()) {
                     mMyDialog.dismiss();
                 }
             }
         });
     }
 
-    private void updateBluetoothDeviceName(String str)
-    {
+    private void updateBluetoothDeviceName(String str) {
 
     }
 
     @OnCheckedChanged({R.id.sw_switch_bluetooth, R.id.sw_switch_discoverable})
-    public void onCheckChanged(CompoundButton compoundButton, boolean isChecked)
-    {
-        if (null == mBluetoothAdapter)
-        {
+    public void onCheckChanged(CompoundButton compoundButton, boolean isChecked) {
+        if (null == mBluetoothAdapter) {
             return;
         }
-        switch (compoundButton.getId())
-        {
+        switch (compoundButton.getId()) {
             case R.id.sw_switch_bluetooth:
-                if (isChecked)
-                {
-                    if (!mBluetoothAdapter.isEnabled())
-                    {
+                if (isChecked) {
+                    if (!mBluetoothAdapter.isEnabled()) {
                         openBluetooth();
                     }
-                } else
-                {
-                    if (mBluetoothAdapter.isEnabled())
-                    {
+                } else {
+                    if (mBluetoothAdapter.isEnabled()) {
                         closeBluetooth();
                         bluetoothEnable(false);
                     }
@@ -534,36 +508,28 @@ public class MainActivity extends Activity
         }
     }
 
-    private void stopScan()
-    {
+    private void stopScan() {
         mBluetoothLeScanner.stopScan(mScanCallback);
-        if (mBluetoothAdapter.isDiscovering())
-        {
+        if (mBluetoothAdapter.isDiscovering()) {
             mBluetoothAdapter.cancelDiscovery();
         }
     }
 
-    private void startDiscovery()
-    {
-        if (null == mBluetoothAdapter)
-        {
+    private void startDiscovery() {
+        if (null == mBluetoothAdapter) {
             return;
         }
-        if (mBluetoothAdapter.isDiscovering())
-        {
+        if (mBluetoothAdapter.isDiscovering()) {
             mBluetoothAdapter.cancelDiscovery();
         }
-        if (mBluetoothAdapter.startDiscovery())
-        {
+        if (mBluetoothAdapter.startDiscovery()) {
             Log.e(TAG, "Start discovery successfully!");
-        } else
-        {
+        } else {
             Log.e(TAG, "Failed to start discovery!");
         }
     }
 
-    private void registerBluetoothReceiver()
-    {
+    private void registerBluetoothReceiver() {
         //注册一个广播,用于接收发现设备的结果
         IntentFilter intentFilter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
         registerReceiver(mBroadcastReceiver, intentFilter);
@@ -573,14 +539,11 @@ public class MainActivity extends Activity
         registerReceiver(mBroadcastReceiver, intentFilter);
     }
 
-    private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver()
-    {
+    private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
         @Override
-        public void onReceive(Context context, Intent intent)
-        {
+        public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
-            switch (action)
-            {
+            switch (action) {
                 case BluetoothDevice.ACTION_FOUND://发现设备
                     BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                     int rssi = intent.getExtras().getShort(BluetoothDevice.EXTRA_RSSI);
@@ -603,23 +566,19 @@ public class MainActivity extends Activity
     };
 
     @Override
-    protected void onDestroy()
-    {
+    protected void onDestroy() {
         super.onDestroy();
         mScanHandler.removeCallbacks(runnableScan);
-        if (null != mBluetoothAdapter && mBluetoothAdapter.isDiscovering())
-        {
+        if (null != mBluetoothAdapter && mBluetoothAdapter.isDiscovering()) {
             mBluetoothAdapter.cancelDiscovery();
             mBluetoothAdapter = null;
         }
         unregisterReceiver(mBroadcastReceiver);
-        if (null != mAvailableDevices)
-        {
+        if (null != mAvailableDevices) {
             mAvailableDevices.clear();
             mAvailableDevices = null;
         }
-        if (null != mBluetoothLeScanner && null != mScanCallback)
-        {
+        if (null != mBluetoothLeScanner && null != mScanCallback) {
             mBluetoothLeScanner.stopScan(mScanCallback);
         }
         mBluetoothLeScanner = null;
