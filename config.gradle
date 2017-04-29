@@ -1,9 +1,27 @@
-ext {
+apply plugin: 'com.android.application'
+project.ext {//project通用配置,所有module的通用配置都从这里读取
+    //java语言相关
+    java = [
+            javaVersion = 8,
+            javaMaxHeapSize = '4G'
+    ]
+
+    //android相关
     android = [
             compileSdkVersion: 25,
             buildToolsVersion: "25.0.2",
             minSdkVersion    : 21,
             targetSdkVersion : 25
+    ]
+//混淆相关
+    proguard = [
+            minifyEnable = true,
+            shrinkResEnable = minifyEnable
+    ]
+    //JDK版本兼容
+    jdkCompat = [
+            sourceCompatibility = this.&getJavaVersion(),
+            targetCompatibility = this.&getJavaVersion()
     ]
 
     dependencies = [
@@ -13,6 +31,18 @@ ext {
             jakewhartonButterknife                   : 'com.jakewharton:butterknife:8.4.0',
             jakewhartonButterknifeAnnotationProcessor: 'com.jakewharton:butterknife-compiler:8.4.0',
             constraintLayout                         : 'com.android.support.constraint:constraint-layout:1.0.2',
-            greenRobotEventBus                       : 'org.greenrobot:eventbus:3.0.0'
+            eventBus                                 : 'org.greenrobot:eventbus:3.0.0'
     ]
+
+}
+
+def getJavaVersion() {
+    switch (project.ext.javaVersion) {
+        case "6": return JavaVersion.VERSION_1_6
+        case "7": return JavaVersion.VERSION_1_7
+        case "8": return JavaVersion.VERSION_1_8
+        case "9": return JavaVersion.VERSION_1_9
+        default: return JavaVersion.VERSION_1_6
+
+    }
 }

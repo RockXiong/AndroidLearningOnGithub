@@ -17,6 +17,8 @@
             <option value="$PROJECT_DIR$/ipc_messenger_server" />
             <option value="$PROJECT_DIR$/ipclearning" />
             <option value="$PROJECT_DIR$/navigationviewlearning" />
+            <option value="$PROJECT_DIR$/notificationlearning" />
+            <option value="$PROJECT_DIR$/threadlearning" />
             <option value="$PROJECT_DIR$/viewevent" />
             <option value="$PROJECT_DIR$/windowandwindowmanager" />
           </set>

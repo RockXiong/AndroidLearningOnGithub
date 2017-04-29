@@ -1,6 +1,6 @@
 android {
     defaultConfig {
-        applicationId "com.xb.navigationviewlearning"
+        applicationId "com.xb.threadlearning"
         versionCode 1
         versionName "1.0"
     }
