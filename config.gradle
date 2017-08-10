@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+//apply plugin: 'com.android.library'
 project.ext {//project通用配置,所有module的通用配置都从这里读取
     //java语言相关
     java = [
