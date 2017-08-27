@@ -9,19 +9,7 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/app" />
-            <option value="$PROJECT_DIR$/bluetoothlearning" />
-            <option value="$PROJECT_DIR$/buglytinkertest2" />
-            <option value="$PROJECT_DIR$/eventbuslearning" />
-            <option value="$PROJECT_DIR$/ipc_messenger_client" />
-            <option value="$PROJECT_DIR$/ipc_messenger_server" />
-            <option value="$PROJECT_DIR$/ipclearning" />
-            <option value="$PROJECT_DIR$/navigationviewlearning" />
-            <option value="$PROJECT_DIR$/ndklearning" />
-            <option value="$PROJECT_DIR$/notificationlearning" />
-            <option value="$PROJECT_DIR$/threadlearning" />
-            <option value="$PROJECT_DIR$/viewevent" />
-            <option value="$PROJECT_DIR$/windowandwindowmanager" />
+            <option value="$PROJECT_DIR$/mvplearning" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />
